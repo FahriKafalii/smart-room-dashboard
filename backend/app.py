@@ -14,6 +14,7 @@ PORT = 1453
 
 def create_app(start_simulator=True):
     app = Flask(__name__, static_folder=None)
+    app.json.ensure_ascii = False
     bp.frontend_dir = FRONTEND_DIR
     app.register_blueprint(bp)
     if start_simulator:
@@ -23,5 +24,5 @@ def create_app(start_simulator=True):
 
 if __name__ == "__main__":
     app = create_app(start_simulator=True)
-    print(f"IoT dashboard hazir: http://localhost:{PORT}")
+    print(f"IoT dashboard hazır: http://localhost:{PORT}")
     app.run(host="0.0.0.0", port=PORT, debug=False, use_reloader=False)

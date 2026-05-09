@@ -19,7 +19,7 @@ def static_assets(path):
 def health():
     return jsonify({
         "status": "running",
-        "message": "IoT dashboard backend calisiyor.",
+        "message": "IoT dashboard backend çalışıyor.",
     })
 
 
@@ -46,7 +46,7 @@ def control():
     new_state = payload.get("state")
 
     if not device or not new_state:
-        return jsonify({"error": "device ve state alanlari zorunludur."}), 400
+        return jsonify({"error": "device ve state alanları zorunludur."}), 400
 
     ok, message = state.set_device(device, new_state)
     if not ok:

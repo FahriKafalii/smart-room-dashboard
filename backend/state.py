@@ -28,9 +28,9 @@ def get_devices():
 
 def set_device(device, state):
     if device not in VALID_DEVICES:
-        return False, f"Gecersiz cihaz: {device}"
+        return False, f"Geçersiz cihaz: {device}"
     if state not in VALID_STATES:
-        return False, f"Gecersiz state: {state}"
+        return False, f"Geçersiz state: {state}"
     with _lock:
         _devices[device] = state
     return True, "OK"
