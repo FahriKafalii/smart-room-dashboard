@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IoT Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=3" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12a7 7 0 0 1 14 0" />
+          <path d="M8.5 12a3.5 3.5 0 0 1 7 0" />
+          <circle cx="12" cy="12" r="1.2" fill="currentColor" />
+          <path d="M12 16v4" />
+          <path d="M9 20h6" />
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">IoT Dashboard</span>
+        <span class="brand-sub">Gercek zamanli sensor &amp; cihaz paneli</span>
+      </div>
+    </div>
+    <div class="status">
+      <span class="status-pill">
+        <span id="health-dot" class="dot"></span>
+        <span id="health-text">Baglaniyor</span>
+      </span>
+      <span class="status-time">
+        <span class="status-label">Son guncelleme</span>
+        <strong id="last-update" class="mono">--:--:--</strong>
+      </span>
+    </div>
+  </header>
+
+  <main>
+    <section class="cards" aria-label="Sensor degerleri">
+      <article class="card" data-metric="temperature">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4a2 2 0 0 0-4 0v10.5a4 4 0 1 0 4 0V4Z"/><circle cx="12" cy="17" r="1.5"/></svg>
+        </div>
+        <div class="card-body">
+          <h2>Sicaklik</h2>
+          <p class="value"><span id="m-temperature" class="mono">--</span><small>&deg;C</small></p>
+        </div>
+        <div class="alert-badge" id="a-temperature" data-tip=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg></div>
+      </article>
+      <article class="card" data-metric="humidity">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11Z"/></svg>
+        </div>
+        <div class="card-body">
+          <h2>Nem</h2>
+          <p class="value"><span id="m-humidity" class="mono">--</span><small>%</small></p>
+        </div>
+        <div class="alert-badge" id="a-humidity" data-tip=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg></div>
+      </article>
+      <article class="card" data-metric="energy">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>
+        </div>
+        <div class="card-body">
+          <h2>Enerji</h2>
+          <p class="value"><span id="m-energy" class="mono">--</span><small>W</small></p>
+        </div>
+        <div class="alert-badge" id="a-energy" data-tip=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg></div>
+      </article>
+      <article class="card" data-metric="light_level">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </div>
+        <div class="card-body">
+          <h2>Isik Seviyesi</h2>
+          <p class="value"><span id="m-light_level" class="mono">--</span><small>lx</small></p>
+        </div>
+        <div class="alert-badge" id="a-light_level" data-tip=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg></div>
+      </article>
+      <article class="card" data-metric="vibration">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h2l2-6 4 12 4-12 2 6h4"/></svg>
+        </div>
+        <div class="card-body">
+          <h2>Titresim</h2>
+          <p class="value"><span id="m-vibration" class="mono">--</span><small>g</small></p>
+        </div>
+        <div class="alert-badge" id="a-vibration" data-tip=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg></div>
+      </article>
+    </section>
+
+    <section class="panel chart-wrap" aria-label="Canli sensor grafigi">
+      <header class="panel-head">
+        <div>
+          <h2>Canli Sensor Grafigi</h2>
+          <p class="panel-sub">Son 60 saniye &middot; akiskan render</p>
+        </div>
+        <div class="legend-tags" id="legend-tags"></div>
+      </header>
+      <div class="chart-frame">
+        <canvas id="temp-chart"></canvas>
+      </div>
+      <div class="chart-scrubber">
+        <button type="button" class="scrubber-live is-active" id="btn-live" title="Canli moda don">
+          <span class="live-dot"></span>
+          CANLI
+        </button>
+        <input type="range" id="time-slider" class="scrubber-range" min="0" max="100" value="100" step="1" />
+        <span class="scrubber-time mono" id="scrubber-time">--:--:--</span>
+      </div>
+    </section>
+
+    <section class="panel controls" aria-label="Cihaz kontrolleri">
+      <header class="panel-head">
+        <div>
+          <h2>Cihaz Kontrolleri</h2>
+          <p class="panel-sub">Cihaz karta tiklayinca aninda durumu degistirir</p>
+        </div>
+      </header>
+      <div class="device-grid">
+        <button type="button" class="device" data-device="fan" aria-pressed="false">
+          <div class="device-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><path d="M12 9.5C12 5 9 3 6 4c-1.5.5-2 2-1.5 3.5C5 9 8 9.5 12 9.5Z"/><path d="M12 14.5c0 4.5 3 6.5 6 5.5 1.5-.5 2-2 1.5-3.5-.5-1.5-3.5-2-7.5-2Z"/><path d="M14.5 12c4.5 0 6.5-3 5.5-6-.5-1.5-2-2-3.5-1.5-1.5.5-2 3.5-2 7.5Z"/><path d="M9.5 12c-4.5 0-6.5 3-5.5 6 .5 1.5 2 2 3.5 1.5 1.5-.5 2-3.5 2-7.5Z"/></svg>
+          </div>
+          <div class="device-meta">
+            <span class="device-name">Fan</span>
+            <span class="device-state" id="s-fan">OFF</span>
+          </div>
+          <span class="device-switch" aria-hidden="true"><span class="device-switch-knob"></span></span>
+        </button>
+        <button type="button" class="device" data-device="heater" aria-pressed="false">
+          <div class="device-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4c1 2-1 3 0 5s3 1 0 5"/><path d="M16 4c1 2-1 3 0 5s3 1 0 5"/><path d="M12 4c1 2-1 3 0 5s3 1 0 5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/></svg>
+          </div>
+          <div class="device-meta">
+            <span class="device-name">Heater</span>
+            <span class="device-state" id="s-heater">OFF</span>
+          </div>
+          <span class="device-switch" aria-hidden="true"><span class="device-switch-knob"></span></span>
+        </button>
+        <button type="button" class="device" data-device="light" aria-pressed="false">
+          <div class="device-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.4.3.5.7.5 1.1V16h6v-1c0-.4.1-.8.5-1.1A6 6 0 0 0 12 3Z"/></svg>
+          </div>
+          <div class="device-meta">
+            <span class="device-name">Light</span>
+            <span class="device-state" id="s-light">OFF</span>
+          </div>
+          <span class="device-switch" aria-hidden="true"><span class="device-switch-knob"></span></span>
+        </button>
+        <button type="button" class="device" data-device="motor" aria-pressed="false">
+          <div class="device-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>
+          </div>
+          <div class="device-meta">
+            <span class="device-name">Motor</span>
+            <span class="device-state" id="s-motor">OFF</span>
+          </div>
+          <span class="device-switch" aria-hidden="true"><span class="device-switch-knob"></span></span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <small>IoT Dashboard prototipi</small>
+  </footer>
+
+  <script src="script.js?v=3"></script>
+</body>
+</html>
