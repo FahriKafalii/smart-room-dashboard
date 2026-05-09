@@ -16,11 +16,11 @@ const els = {
 };
 
 const SERIES = [
-  { key: "temperature", label: "Sicaklik (°C)", color: "#f87171", axis: "yLeft" },
+  { key: "temperature", label: "Sıcaklık (°C)", color: "#f87171", axis: "yLeft" },
   { key: "humidity",    label: "Nem (%)",       color: "#38bdf8", axis: "yLeft" },
-  { key: "vibration",   label: "Titresim (g)",  color: "#a78bfa", axis: "yLeft" },
+  { key: "vibration",   label: "Titreşim (g)",  color: "#a78bfa", axis: "yLeft" },
   { key: "energy",      label: "Enerji (W)",    color: "#fbbf24", axis: "yRight" },
-  { key: "light_level", label: "Isik (lx)",     color: "#34d399", axis: "yRight" },
+  { key: "light_level", label: "Işık (lx)",     color: "#34d399", axis: "yRight" },
 ];
 
 const chartCanvas = document.getElementById("temp-chart");
@@ -245,7 +245,7 @@ buildLegend();
 function setHealth(ok) {
   els.healthDot.classList.toggle("ok", ok);
   els.healthDot.classList.toggle("bad", !ok);
-  els.healthText.textContent = ok ? "Baglandi" : "Baglanti yok";
+  els.healthText.textContent = ok ? "Bağlandı" : "Bağlantı yok";
 }
 
 const THRESHOLDS = {
@@ -253,10 +253,10 @@ const THRESHOLDS = {
     warn:  (v) => v >= 38 || v <= 14,
     crit:  (v) => v >= 42 || v <= 11,
     msg: (v) => {
-      if (v >= 42) return `KRITIK: Sicaklik ${v}°C - sensor sinirina (45°C) cok yakin. Heater'i kapatin.`;
-      if (v <= 11) return `KRITIK: Sicaklik ${v}°C - alt sensor sinirina (10°C) yaklasiyor.`;
-      if (v >= 38) return `UYARI: Sicaklik ${v}°C yuksek. 45°C ust sinira yaklasiyor.`;
-      if (v <= 14) return `UYARI: Sicaklik ${v}°C dusuk. 10°C alt sinira yaklasiyor.`;
+      if (v >= 42) return `KRİTİK: Sıcaklık ${v}°C - sensör sınırına (45°C) çok yakın. Heater'ı kapatın.`;
+      if (v <= 11) return `KRİTİK: Sıcaklık ${v}°C - alt sensör sınırına (10°C) yaklaşıyor.`;
+      if (v >= 38) return `UYARI: Sıcaklık ${v}°C yüksek. 45°C üst sınıra yaklaşıyor.`;
+      if (v <= 14) return `UYARI: Sıcaklık ${v}°C düşük. 10°C alt sınıra yaklaşıyor.`;
       return "";
     },
   },
@@ -264,10 +264,10 @@ const THRESHOLDS = {
     warn:  (v) => v >= 80 || v <= 28,
     crit:  (v) => v >= 87 || v <= 23,
     msg: (v) => {
-      if (v >= 87) return `KRITIK: Nem %${v} - 90% ust sinirina cok yakin.`;
-      if (v <= 23) return `KRITIK: Nem %${v} - 20% alt sinirina yaklasiyor (asiri kuru).`;
-      if (v >= 80) return `UYARI: Nem %${v} yuksek. Konfor disi.`;
-      if (v <= 28) return `UYARI: Nem %${v} dusuk. Hava kuru.`;
+      if (v >= 87) return `KRİTİK: Nem %${v} - 90% üst sınırına çok yakın.`;
+      if (v <= 23) return `KRİTİK: Nem %${v} - 20% alt sınırına yaklaşıyor (aşırı kuru).`;
+      if (v >= 80) return `UYARI: Nem %${v} yüksek. Konfor dışı.`;
+      if (v <= 28) return `UYARI: Nem %${v} düşük. Hava kuru.`;
       return "";
     },
   },
@@ -275,8 +275,8 @@ const THRESHOLDS = {
     warn:  (v) => v >= 1500,
     crit:  (v) => v >= 1700,
     msg: (v) => {
-      if (v >= 1700) return `KRITIK: Toplam tuketim ${v}W - cok yuksek. Cihazlari azaltin.`;
-      if (v >= 1500) return `UYARI: Tuketim ${v}W. Heater tek basina ~1500W cekiyor.`;
+      if (v >= 1700) return `KRİTİK: Toplam tüketim ${v}W - çok yüksek. Cihazları azaltın.`;
+      if (v >= 1500) return `UYARI: Tüketim ${v}W. Heater tek başına ~1500W çekiyor.`;
       return "";
     },
   },
@@ -284,8 +284,8 @@ const THRESHOLDS = {
     warn:  (v) => v >= 950,
     crit:  (v) => v >= 990,
     msg: (v) => {
-      if (v >= 990) return `KRITIK: Isik ${v} lx - sensor sinirinda (1000 lx).`;
-      if (v >= 950) return `UYARI: Isik ${v} lx cok parlak. Goz yorgunlugu olabilir.`;
+      if (v >= 990) return `KRİTİK: Işık ${v} lx - sensör sınırında (1000 lx).`;
+      if (v >= 950) return `UYARI: Işık ${v} lx çok parlak. Göz yorgunluğu olabilir.`;
       return "";
     },
   },
@@ -293,8 +293,8 @@ const THRESHOLDS = {
     warn:  (v) => v >= 3.5,
     crit:  (v) => v >= 4.5,
     msg: (v) => {
-      if (v >= 4.5) return `KRITIK: Titresim ${v}g - sensor sinirina (5g) yaklasiyor. Motor arizasi olabilir.`;
-      if (v >= 3.5) return `UYARI: Titresim ${v}g yuksek. ISO 10816 ev sinifi icin kabul edilemez.`;
+      if (v >= 4.5) return `KRİTİK: Titreşim ${v}g - sensör sınırına (5g) yaklaşıyor. Motor arızası olabilir.`;
+      if (v >= 3.5) return `UYARI: Titreşim ${v}g yüksek. ISO 10816 ev sınıfı için kabul edilemez.`;
       return "";
     },
   },
@@ -350,7 +350,7 @@ async function fetchData() {
     pushSample(json.data);
   } catch (err) {
     setHealth(false);
-    console.error("/api/data hatasi:", err.message);
+    console.error("/api/data hatası:", err.message);
   }
 }
 
@@ -363,12 +363,12 @@ async function sendControl(device, state) {
     });
     const json = await res.json().catch(() => ({}));
     if (!res.ok) {
-      console.error(`/api/control hatasi (${res.status}):`, json.error || "bilinmiyor");
+      console.error(`/api/control hatası (${res.status}):`, json.error || "bilinmiyor");
       return;
     }
     if (json.devices) renderDevices(json.devices);
   } catch (err) {
-    console.error("/api/control istek hatasi:", err.message);
+    console.error("/api/control istek hatası:", err.message);
   }
 }
 

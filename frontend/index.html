@@ -24,29 +24,29 @@
       </div>
       <div class="brand-text">
         <span class="brand-title">IoT Dashboard</span>
-        <span class="brand-sub">Gercek zamanli sensor &amp; cihaz paneli</span>
+        <span class="brand-sub">Gerçek zamanlı sensör &amp; cihaz paneli</span>
       </div>
     </div>
     <div class="status">
       <span class="status-pill">
         <span id="health-dot" class="dot"></span>
-        <span id="health-text">Baglaniyor</span>
+        <span id="health-text">Bağlanıyor</span>
       </span>
       <span class="status-time">
-        <span class="status-label">Son guncelleme</span>
+        <span class="status-label">Son güncelleme</span>
         <strong id="last-update" class="mono">--:--:--</strong>
       </span>
     </div>
   </header>
 
   <main>
-    <section class="cards" aria-label="Sensor degerleri">
+    <section class="cards" aria-label="Sensör değerleri">
       <article class="card" data-metric="temperature">
         <div class="card-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4a2 2 0 0 0-4 0v10.5a4 4 0 1 0 4 0V4Z"/><circle cx="12" cy="17" r="1.5"/></svg>
         </div>
         <div class="card-body">
-          <h2>Sicaklik</h2>
+          <h2>Sıcaklık</h2>
           <p class="value"><span id="m-temperature" class="mono">--</span><small>&deg;C</small></p>
         </div>
         <div class="alert-badge" id="a-temperature" data-tip=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg></div>
@@ -76,7 +76,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
         </div>
         <div class="card-body">
-          <h2>Isik Seviyesi</h2>
+          <h2>Işık Seviyesi</h2>
           <p class="value"><span id="m-light_level" class="mono">--</span><small>lx</small></p>
         </div>
         <div class="alert-badge" id="a-light_level" data-tip=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg></div>
@@ -86,18 +86,18 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h2l2-6 4 12 4-12 2 6h4"/></svg>
         </div>
         <div class="card-body">
-          <h2>Titresim</h2>
+          <h2>Titreşim</h2>
           <p class="value"><span id="m-vibration" class="mono">--</span><small>g</small></p>
         </div>
         <div class="alert-badge" id="a-vibration" data-tip=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg></div>
       </article>
     </section>
 
-    <section class="panel chart-wrap" aria-label="Canli sensor grafigi">
+    <section class="panel chart-wrap" aria-label="Canlı sensör grafiği">
       <header class="panel-head">
         <div>
-          <h2>Canli Sensor Grafigi</h2>
-          <p class="panel-sub">Son 60 saniye &middot; akiskan render</p>
+          <h2>Canlı Sensör Grafiği</h2>
+          <p class="panel-sub">Son 60 saniye &middot; akışkan render</p>
         </div>
         <div class="legend-tags" id="legend-tags"></div>
       </header>
@@ -105,7 +105,7 @@
         <canvas id="temp-chart"></canvas>
       </div>
       <div class="chart-scrubber">
-        <button type="button" class="scrubber-live is-active" id="btn-live" title="Canli moda don">
+        <button type="button" class="scrubber-live is-active" id="btn-live" title="Canlı moda dön">
           <span class="live-dot"></span>
           CANLI
         </button>
@@ -118,7 +118,7 @@
       <header class="panel-head">
         <div>
           <h2>Cihaz Kontrolleri</h2>
-          <p class="panel-sub">Cihaz karta tiklayinca aninda durumu degistirir</p>
+          <p class="panel-sub">Cihaz kartına tıklayınca anında durumu değiştirir</p>
         </div>
       </header>
       <div class="device-grid">
