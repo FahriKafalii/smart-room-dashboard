@@ -1,8 +1,8 @@
 # Smart Room Dashboard
 
-> Fiziksel donanim olmadan calisan, gercek-zamanli bir IoT sistemini bastan
-> sona modelleyen prototip dashboard. Sensor uretimi, REST API, canli
-> grafiklerle web arayuzu ve cihaz kontrolunu tek surec icinde sergiler.
+> Fiziksel donanım olmadan çalışan, gerçek zamanlı bir IoT sistemini baştan
+> sona modelleyen prototip dashboard. Sensör üretimi, REST API, canlı
+> grafiklerle web arayüzü ve cihaz kontrolünü tek süreç içinde sergiler.
 
 ![Python](https://img.shields.io/badge/Python-3.8+-3776AB?logo=python&logoColor=white)
 ![Flask](https://img.shields.io/badge/Flask-3.0-000000?logo=flask&logoColor=white)
@@ -11,24 +11,24 @@
 
 ---
 
-## Onizleme
+## Önizleme
 
 ![Dashboard](docs/screenshots/dashboard.png)
 
 ---
 
-## Hakkinda
+## Hakkında
 
-Bu proje, IoT sistemlerini ogrenmek/anlatmak icin hazirlanmis bir
-**referans uygulamadir**. Gercek bir akilli oda senaryosunu — sensor
-okumalari, cihaz kontrolu, canli izleme — fiziksel donanim ihtiyaci
-olmadan, sadece Python ve modern web teknolojileriyle modellemeyi amaclar.
+Bu proje, IoT sistemlerini öğrenmek ve anlatmak için hazırlanmış bir
+**referans uygulamadır**. Gerçek bir akıllı oda senaryosunu — sensör
+okumaları, cihaz kontrolü, canlı izleme — fiziksel donanım ihtiyacı
+olmadan, sadece Python ve modern web teknolojileriyle modellemeyi amaçlar.
 
-5 sensor (sicaklik, nem, enerji, isik, titresim) ve 4 cihaz (fan, heater,
-light, motor) icerir. Cihaz durumlari sensor okumalarini **fiziksel olarak
-mantikli** sekilde etkiler: heater acilinca sicaklik tirmanir ve nem
-duser, motor acilinca titresim sicrar, light gunes egrisinden de
-beslenerek 800 lx hedefine yumusakca ramp eder.
+5 sensör (sıcaklık, nem, enerji, ışık, titreşim) ve 4 cihaz (fan, heater,
+light, motor) içerir. Cihaz durumları sensör okumalarını **fiziksel olarak
+mantıklı** şekilde etkiler: heater açılınca sıcaklık tırmanır ve nem
+düşer, motor açılınca titreşim sıçrar, light güneş eğrisinden de
+beslenerek 800 lx hedefine yumuşakça ramp eder.
 
 ---
 
@@ -48,69 +48,69 @@ beslenerek 800 lx hedefine yumusakca ramp eder.
         +-------- HTTP / JSON --------> sensor_state
 ```
 
-**Tek surec, tek port, sifir bagimlilik kompleksligi.** Backend ana
-thread'i HTTP isteklerini servis eder; daemon thread her saniye state'i
-gunceller. Iki thread arasi senkronizasyon `RLock` ile saglanir — okuma
-ve yazma sirasinda race condition yok.
+**Tek süreç, tek port, sıfır bağımlılık karmaşası.** Backend ana thread'i
+HTTP isteklerini servis eder; daemon thread her saniye state'i günceller.
+İki thread arası senkronizasyon `RLock` ile sağlanır — okuma ve yazma
+sırasında race condition yok.
 
 ---
 
-## Ozellikler
+## Özellikler
 
 ### Backend
-- 1 Hz tick periyoduyla **fiziksel olarak tutarli sensor uretimi**
-  (Clausius-Clapeyron yaklasimi ile heater→nem dusumu, ambient drift,
-  saat-bazli gunes lumeni)
-- Thread-safe state yonetimi (`threading.RLock`)
+- 1 Hz tick periyoduyla **fiziksel olarak tutarlı sensör üretimi**
+  (Clausius-Clapeyron yaklaşımı ile heater→nem düşümü, ambient drift,
+  saat-bazlı güneş lümeni)
+- Thread-safe state yönetimi (`threading.RLock`)
 - 6 REST endpoint (health, data, history, control GET/POST, dashboard)
-- Validation: hatali cihaz/state isteklerine `400` + aciklayici JSON
+- Validation: hatalı cihaz/state isteklerine `400` + açıklayıcı JSON
 
 ### Frontend
-- 5 metrigi **iki Y ekseninde** tek grafikte gosterim (sicaklik/nem/
-  titresim solda, enerji/isik sagda)
-- Chart.js Bezier yumusatma (`tension: 0.55`) ile akiskan, kirilmasiz cizgi
-- 30 fps render dongusu — backend 1 Hz olsa bile grafik akiskan akar
-- **Esik bazli uyari sistemi**: yanip sonen ikon + ozel CSS tooltip
-- **Slider scrubber**: son 30 dakikalik veride gecmise donus
-- iOS-tarzi switch ile cihaz kontrolu, anlik UI feedback
-- Responsive tasarim (mobil/tablet/desktop)
+- 5 metriği **iki Y ekseninde** tek grafikte gösterim (sıcaklık/nem/
+  titreşim solda, enerji/ışık sağda)
+- Chart.js Bezier yumuşatma (`tension: 0.55`) ile akışkan, kırılmasız çizgi
+- 30 fps render döngüsü — backend 1 Hz olsa bile grafik akışkan akar
+- **Eşik bazlı uyarı sistemi**: yanıp sönen ikon + özel CSS tooltip
+- **Slider scrubber**: son 30 dakikalık veride geçmişe dönüş
+- iOS-tarzı switch ile cihaz kontrolü, anlık UI feedback
+- Responsive tasarım (mobil/tablet/desktop)
 
-### Sektor karsiligi
-- Home Assistant tarzi smart-home dashboard'larin minimal versiyonu
-- SCADA / endustriyel goruntuleme sistemlerinin egitim modeli
-- Predictive maintenance (titresim tabanli) icin baslangic noktasi
-
----
-
-## Cihaz Davranis Matrisi
-
-| Cihaz   | Sicaklik | Nem    | Isik | Titresim | Enerji  |
-|---------|----------|--------|------|----------|---------|
-| Heater  | ↑↑↑      | ↓↓     | —    | —        | +1500W  |
-| Fan     | —        | denge ↑↑ | —  | —        | +50W    |
-| Light   | ↑ (cuzi) | —      | ↑↑↑ | —        | +12W    |
-| Motor   | ↑ (cuzi) | —      | —    | ↑↑↑      | +100W   |
-
-**Onemli noktalar:**
-- **Fan tek basina sicakligi DUSURMEZ** (gercek fizik: fan havayi
-  karistirir, sogutmaz). Sadece dengeleme hizini 2× yapar.
-- **Heater + Fan birlikte ısınmayı surdurur** — fan iptal etmez.
-- **Tum OFF**: degerler 22 °C / %50 RH ortam dengesine doner.
+### Sektör karşılığı
+- Home Assistant tarzı smart-home dashboard'larının minimal versiyonu
+- SCADA / endüstriyel görüntüleme sistemlerinin eğitim modeli
+- Predictive maintenance (titreşim tabanlı) için başlangıç noktası
 
 ---
 
-## Uyari Esikleri
+## Cihaz Davranış Matrisi
 
-| Metrik     | Uyari (sari) | Kritik (kirmizi) | Sensor sinirlari |
+| Cihaz   | Sıcaklık | Nem      | Işık | Titreşim | Enerji  |
+|---------|----------|----------|------|----------|---------|
+| Heater  | ↑↑↑      | ↓↓       | —    | —        | +1500W  |
+| Fan     | —        | denge ↑↑ | —    | —        | +50W    |
+| Light   | ↑ (cüzi) | —        | ↑↑↑  | —        | +12W    |
+| Motor   | ↑ (cüzi) | —        | —    | ↑↑↑      | +100W   |
+
+**Önemli noktalar:**
+- **Fan tek başına sıcaklığı DÜŞÜRMEZ** (gerçek fizik: fan havayı
+  karıştırır, soğutmaz). Sadece dengeleme hızını 2× yapar.
+- **Heater + Fan birlikte ısınmayı sürdürür** — fan iptal etmez.
+- **Tüm OFF**: değerler 22 °C / %50 RH ortam dengesine döner.
+
+---
+
+## Uyarı Eşikleri
+
+| Metrik     | Uyarı (sarı) | Kritik (kırmızı) | Sensör sınırları |
 |------------|--------------|------------------|------------------|
-| Sicaklik   | ≥38 / ≤14 °C | ≥42 / ≤11 °C    | 10–45 °C         |
+| Sıcaklık   | ≥38 / ≤14 °C | ≥42 / ≤11 °C    | 10–45 °C         |
 | Nem        | ≥80 / ≤28 %  | ≥87 / ≤23 %     | 20–90 %          |
 | Enerji     | ≥1500 W      | ≥1700 W         | (max ~1667 W)    |
-| Isik       | ≥950 lx      | ≥990 lx         | 0–1000 lx        |
-| Titresim   | ≥3.5 g       | ≥4.5 g          | 0–5 g (ISO 10816)|
+| Işık       | ≥950 lx      | ≥990 lx         | 0–1000 lx        |
+| Titreşim   | ≥3.5 g       | ≥4.5 g          | 0–5 g (ISO 10816)|
 
-Esikler asilinca kart sag-ust kosesinde **yanip sonen ikon** belirir.
-Uzerine gelinince ozel tooltip ile aciklama + oneri gosterilir.
+Eşikler aşılınca kart sağ-üst köşesinde **yanıp sönen ikon** belirir.
+Üzerine gelince özel tooltip ile açıklama + öneri gösterilir.
 
 ---
 
@@ -129,28 +129,28 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Calistirma
+## Çalıştırma
 
 ```bash
 python -m backend
 ```
 
-Tarayici: **http://localhost:1453**
+Tarayıcı: **http://localhost:1453**
 
 ---
 
 ## REST API
 
-| Method | Endpoint        | Aciklama                                          |
+| Method | Endpoint        | Açıklama                                          |
 |--------|-----------------|---------------------------------------------------|
 | GET    | `/`             | Dashboard HTML                                    |
-| GET    | `/api/health`   | Saglik kontrolu                                   |
-| GET    | `/api/data`     | Anlik sensor verisi + cihaz durumlari             |
-| GET    | `/api/history`  | Son 60 sensor okumasi                             |
-| GET    | `/api/control`  | Mevcut cihaz durumlari                            |
+| GET    | `/api/health`   | Sağlık kontrolü                                   |
+| GET    | `/api/data`     | Anlık sensör verisi + cihaz durumları             |
+| GET    | `/api/history`  | Son 60 sensör okuması                             |
+| GET    | `/api/control`  | Mevcut cihaz durumları                            |
 | POST   | `/api/control`  | `{ "device": "heater", "state": "ON\|OFF" }`     |
 
-**Ornek:**
+**Örnek:**
 
 ```bash
 curl http://localhost:1453/api/data
@@ -159,27 +159,26 @@ curl -X POST http://localhost:1453/api/control \
      -d '{"device":"heater","state":"ON"}'
 ```
 
-Hatali istekler `400` + `{"error": "..."}` doner.
+Hatalı istekler `400` + `{"error": "..."}` döner.
 
 ---
 
-## Proje Yapisi
+## Proje Yapısı
 
 ```
 .
 ├── backend/
-│   ├── __main__.py     # python -m backend giris noktasi
-│   ├── app.py          # Flask app fabrikasi
+│   ├── __main__.py     # python -m backend giriş noktası
+│   ├── app.py          # Flask app fabrikası
 │   ├── routes.py       # 6 REST endpoint
-│   ├── simulator.py    # Sensor uretimi + 1 Hz daemon
+│   ├── simulator.py    # Sensör üretimi + 1 Hz daemon
 │   └── state.py        # Thread-safe global state
 ├── frontend/
-│   ├── index.html      # Tek sayfalik dashboard
+│   ├── index.html      # Tek sayfalık dashboard
 │   ├── style.css       # Modern, responsive, koyu tema
-│   └── script.js       # Chart.js + akiskan render + uyari motoru
+│   └── script.js       # Chart.js + akışkan render + uyarı motoru
 ├── docs/
 │   ├── architecture.md
-│   ├── requirements.md
 │   ├── sector_notes.md
 │   └── screenshots/
 ├── requirements.txt
@@ -190,41 +189,41 @@ Hatali istekler `400` + `{"error": "..."}` doner.
 
 ## Teknik Detaylar
 
-**Neden cift Y ekseni?** Sicaklik 22 °C ve enerji 1500 W ayni grafikte
-tek eksende gosterilirse sicaklik degeri ezilir. Cift eksen ile her
-metrik kendi olceginde okunabilir.
+**Neden çift Y ekseni?** Sıcaklık 22 °C ve enerji 1500 W aynı grafikte tek
+eksende gösterilirse sıcaklık değeri ezilir. Çift eksen ile her metrik
+kendi ölçeğinde okunabilir.
 
-**Neden EMA yumusatma var, ama light/vibration icin BYPASS?** Sensor
-verisi ham haliyle titrek olur. EMA (α=0.45) bunu dengeli yumusatir.
-Ancak `light_level` ve `vibration` zaten step-function davranis
-gostermesi gereken metriklerdir (lamba acilir-acilmaz tam parlaklik,
-motor calisinca anlik titresim) — bu nedenle EMA bypass edilir.
+**Neden EMA yumuşatma var, ama light/vibration için BYPASS?** Sensör
+verisi ham haliyle titrek olur. EMA (α=0.45) bunu dengeli yumuşatır.
+Ancak `light_level` ve `vibration` zaten step-function davranış
+göstermesi gereken metriklerdir (lamba açılır-açılmaz tam parlaklık,
+motor çalışınca anlık titreşim) — bu nedenle EMA bypass edilir.
 
-**Neden 30 fps render?** Backend 1 Hz veri uretiyor olsa bile, X
-ekseninin akiskan kaymasi icin frontend 30 fps'de yeniden cizer.
-Boylece grafik "kare-kare" gitmez, su gibi akar.
+**Neden 30 fps render?** Backend 1 Hz veri üretiyor olsa bile, X
+ekseninin akışkan kayması için frontend 30 fps'de yeniden çizer.
+Böylece grafik "kare-kare" gitmez, su gibi akar.
 
-**Neden RLock?** Iki thread (HTTP request + simulator) ayni state'e
-yazip okur. Standart `Lock` yerine `RLock` (reentrant) tercih edildi —
-ayni thread icinde lock'u tekrar alabilir, deadlock riskini azaltir.
+**Neden RLock?** İki thread (HTTP request + simulator) aynı state'e yazıp
+okur. Standart `Lock` yerine `RLock` (reentrant) tercih edildi — aynı
+thread içinde lock'u tekrar alabilir, deadlock riskini azaltır.
 
 ---
 
 ## Scope
 
-**Dahil:** Sensor simulasyonu, REST API, dashboard, cihaz kontrolu,
-canli grafikler, uyari sistemi, time scrubber.
+**Dahil:** Sensör simülasyonu, REST API, dashboard, cihaz kontrolü, canlı
+grafikler, uyarı sistemi, time scrubber.
 
-**Disarida birakilan (kapsam disi):**
-- Authentication / kullanici yonetimi
-- Veritabani persistence (process restart sonrasi history silinir)
-- MQTT / WebSocket (push protokolu yerine 1 Hz polling)
+**Dışarıda bırakılan (kapsam dışı):**
+- Authentication / kullanıcı yönetimi
+- Veritabanı persistence (process restart sonrası history silinir)
+- MQTT / WebSocket (push protokolü yerine 1 Hz polling)
 - Docker / cloud deployment
-- Gercek donanim baglantisi
+- Gerçek donanım bağlantısı
 - AI/ML, anomali tespiti, bildirim sistemi
 
-Bu kapsam disi maddeler **bilinçli** secimlerdir; prototipin egitim/
-demo amacini bulandirmamak icin haricte tutulmustur.
+Bu kapsam dışı maddeler **bilinçli** seçimlerdir; prototipin eğitim/demo
+amacını bulandırmamak için hariçte tutulmuştur.
 
 ---
 
